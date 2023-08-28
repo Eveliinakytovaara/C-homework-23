@@ -1,9 +1,10 @@
 #include <stdio.h>
 
 int main() {
-    float taxpr;
-    float limit;
-    float highertax;
+    float taxpr = 0;
+    float limit = 0;
+    float highertax = 0;
+    float alltgt = 0;
 
     // User input
     printf("What is your tax precentage? \n");
@@ -15,34 +16,35 @@ int main() {
     printf("Enter higher tax percentage, if your income goes over the limit: \n");
     scanf("%f", &highertax);
 
-    int months;
-    printf("Number of months: \n");
-    scanf("%d", &months);
 
+    float salary[12]={0};
+    float tax[12]={0};
 
-    float salary[months];
-    float tax[months];
-
-    for (int i = 0; i < months; i++) {
+    for (int i = 0; i < 12; i++) {
         printf("Enter salary for month %d: \n ", i + 1);
         scanf("%f", &salary[i]);
 
         // Tax of each month
         float income = salary[i];
-        float taxAmount;
+        float taxamount = 0;
+        alltgt = alltgt + income;
 
-        if (income <= income) {
-            taxAmount = (income * taxpr) / 100;
-        } else {
-            float lowertax = (income * taxpr) / 100;
-            float highincome = income - income;
-            float highertax = (highincome * highertax) / 100;
-            taxAmount = lowertax + highertax;
+        if (alltgt <= limit) {
+            taxamount = (income * taxpr) / 100;
+
+        }else if (alltgt - income < limit) {
+            float lowertaxr = limit - (alltgt-income);
+            float hightaxr = income - lowertaxr;
+
+            taxamount = (lowertaxr * taxpr/100) + (highertax * hightaxr/100);
+
+        }else {
+            taxamount =  (income * highertax) / 100;
+
         }
+tax[i]=taxamount;
 
-        tax[i] = taxAmount;
-
-        printf("Month %d: Salary=%.2f, Tax=%.2f\n", i + 1, salary[i], tax[i]);
+        printf("Month %d: Salary=%.2f, Tax=%.2f\n", i + 1, income, taxamount);
     }
 
     return 0;
