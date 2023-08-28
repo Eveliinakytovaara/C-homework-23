@@ -7,58 +7,52 @@ int main() {
     float alltgt = 0;
 
     // User input
-    printf("What is your tax percentage? \n");
+    printf("What is your tax precentage? \n");
     scanf("%f", &taxpr);
 
     printf("What is your income limit? \n ");
     scanf("%f", &limit);
 
-    printf("Enter a higher tax percentage, if your income goes over the limit: \n");
+    printf("Enter higher tax percentage, if your income goes over the limit: \n");
     scanf("%f", &highertax);
 
-    float salary[12] = {0};
-    float tax[12] = {0};
+
+    float salary[12]={0};
+    float tax[12]={0};
+
+
 
     for (int i = 0; i < 12; i++) {
         printf("Enter salary for month %d: \n ", i + 1);
         scanf("%f", &salary[i]);
 
-        // Updating total income of all months
-        alltgt += salary[i];
-    }
-
-    // Print all information for each month
-    printf("\nMonthly Details:\n");
-    printf("Month  Income   Tax\n");
-
-    for (int i = 0; i < 12; i++) {
         // Tax of each month
         float income = salary[i];
-        float taxamount = 0;
+        float taxamount = tax[i];
+        alltgt = alltgt + income;
 
         if (alltgt <= limit) {
             taxamount = (income * taxpr) / 100;
-        } else {
-            // Calculates tax if income is under the limit
-            float lowertaxr = limit - (alltgt - salary[i]);
-            if (lowertaxr > 0) {
-                taxamount += (lowertaxr * taxpr / 100);
-            }
 
-            // Calculates tax if income goes over the limit
+        }else if (alltgt - income < limit) {
+            float lowertaxr = limit - (alltgt-income);
             float hightaxr = income - lowertaxr;
-            if (hightaxr > 0) {
-                taxamount += (hightaxr * highertax / 100);
-            }
+
+            taxamount = (lowertaxr * taxpr/100) + (highertax * hightaxr/100);
+
+        }else {
+            taxamount =  (income * highertax) / 100;
+
         }
 
-        tax[i] = taxamount;
+        printf("Month  Income   Tax\n");
         printf("%5d  %7.2f  %6.2f\n", i + 1, income, taxamount);
     }
 
-    // Printing all information together
+    printf("\nYearly Summary:\n");
     printf("Total Income: %.2f\n", alltgt);
     printf("Total Tax: %.2f\n", taxpr <= 0 ? 0 : (alltgt <= limit ? (alltgt * taxpr / 100) : ((limit * taxpr / 100) + ((alltgt - limit) * highertax / 100))));
+
 
     return 0;
 }
